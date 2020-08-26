@@ -140,6 +140,8 @@ pub struct Window {
     windowed_context: WindowedContext<PossiblyCurrent>,
     current_mouse_cursor: CursorIcon,
     mouse_visible: bool,
+    fps: Option<f64>,
+    title: Option<String>,
 }
 
 impl Window {
@@ -200,6 +202,8 @@ impl Window {
             should_draw: Rc::new(AtomicBool::new(true)),
             #[cfg(not(any(target_os = "macos", windows)))]
             wayland_surface,
+            fps: None,
+            title: None,
         })
     }
 
@@ -222,8 +226,35 @@ impl Window {
 
     /// Set the window title.
     #[inline]
-    pub fn set_title(&self, title: &str) {
-        self.window().set_title(title);
+    pub fn set_title(&mut self, title: &str) {
+        self.title = Some(title.to_string());
+        if let Some(fps) = self.fps {
+            self.window().set_title(&format!("FPS: {:.0}, {}", fps, title));
+        } else {
+            self.window().set_title(title);
+        }
+    }
+
+    #[inline]
+    pub fn set_fps(&mut self, fps: f64) {
+        self.fps = Some(fps);
+        if let Some(title) = &self.title {
+            self.window().set_title(&format!("FPS: {:.0}, {}", fps, title));
+        } else {
+            self.window().set_title(&format!("FPS: {:.0}", fps));
+        }
+    }
+
+    #[inline]
+    pub fn unset_fps(&mut self) {
+        if self.fps.is_some() {
+            self.fps = None;
+            if let Some(title) = &self.title {
+                self.window().set_title(title);
+            } else {
+                self.window().set_title("");
+            }
+        }
     }
 
     #[inline]
