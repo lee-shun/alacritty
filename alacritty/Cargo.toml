@@ -30,6 +30,7 @@ libc = "0.2"
 unicode-width = "0.1"
 rustc-hash = "1.1.0"
 linked-hash-map = "0.5.3"
+spin_sleep = "1.0.0"
 
 [build-dependencies]
 gl_generator = "0.14.0"
