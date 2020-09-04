@@ -558,23 +558,20 @@ impl Display {
                         ));
                     }
                     if config.ui_config.font.ligatures() {
-                        #[cfg(not(target_os = "windows"))]
-                        {
-                            use std::hash::{Hash, Hasher};
-                            let mut hasher = rustc_hash::FxHasher::default();
-                            text_run.hash(&mut hasher);
-                            let key = hasher.finish();
-                            if let Some(text_run_with_data) = _text_run_cache.get_refresh(&key) {
-                                if text_run.eq(text_run_with_data) {
-                                    hit += 1;
-                                    text_run.update_from_data(&text_run_with_data);
-                                    api.render_text_run_with_data(&mut text_run, glyph_cache);
-                                    continue;
-                                }
+                        use std::hash::{Hash, Hasher};
+                        let mut hasher = rustc_hash::FxHasher::default();
+                        text_run.hash(&mut hasher);
+                        let key = hasher.finish();
+                        if let Some(text_run_with_data) = _text_run_cache.get_refresh(&key) {
+                            if text_run.eq(text_run_with_data) {
+                                hit += 1;
+                                text_run.update_from_data(&text_run_with_data);
+                                api.render_text_run_with_data(&mut text_run, glyph_cache);
+                                continue;
                             }
-                            api.render_text_run_with_data(&mut text_run, glyph_cache);
-                            _text_run_cache.insert(key, text_run);
                         }
+                        api.render_text_run_with_data(&mut text_run, glyph_cache);
+                        _text_run_cache.insert(key, text_run);
                     } else {
                         api.render_text_run(&text_run, glyph_cache);
                     }

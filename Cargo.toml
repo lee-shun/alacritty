@@ -10,4 +10,4 @@ debug = 1
 incremental = false
 
 [patch.crates-io]
-crossfont = { git = "https://github.com/zenixls2/crossfont", branch = "ligature", features = ["force_system_fontconfig"] }
+crossfont = { git = "https://github.com/zenixls2/crossfont", branch = "windows", features = ["force_system_fontconfig"] }

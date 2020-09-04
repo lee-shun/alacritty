@@ -9,7 +9,6 @@ use std::ptr;
 use std::sync::mpsc;
 use std::time::Duration;
 
-#[cfg(not(windows))]
 use crossfont::RasterizeExt;
 use crossfont::{
     self, BitmapBuffer, FontDesc, FontKey, GlyphKey, KeyType, Rasterize, RasterizedGlyph,
@@ -1059,7 +1058,6 @@ impl<'a> RenderApi<'a> {
         self.add_render_item(start_cell, &glyph);
     }
 
-    #[cfg(not(target_os = "windows"))]
     fn render_cursor_with_data(
         &mut self,
         start_cell: &RenderableCell,
@@ -1117,7 +1115,6 @@ impl<'a> RenderApi<'a> {
         }
     }
 
-    #[cfg(not(target_os = "windows"))]
     fn render_zero_widths_with_data<'r, I>(
         &mut self,
         zero_width_chars: I,
@@ -1188,7 +1185,6 @@ impl<'a> RenderApi<'a> {
         }
     }
 
-    #[cfg(not(target_os = "windows"))]
     pub fn render_text_run_with_data(
         &mut self,
         text_run: &mut TextRun,

@@ -50,7 +50,6 @@ pub struct Font {
     use_thin_strokes: DefaultTrueBool,
 
     /// Toggles rendering of font ligatures
-    #[cfg(not(target_os = "windows"))]
     #[serde(deserialize_with = "failure_default")]
     ligatures: DefaultTrueBool,
 }
@@ -67,7 +66,6 @@ impl Default for Font {
             offset: Default::default(),
             #[cfg(target_os = "macos")]
             use_thin_strokes: Default::default(),
-            #[cfg(not(target_os = "windows"))]
             ligatures: Default::default(),
         }
     }
@@ -109,15 +107,10 @@ impl Font {
         false
     }
 
-    #[cfg(not(target_os = "windows"))]
     pub fn ligatures(&self) -> bool {
         self.ligatures.0
     }
 
-    #[cfg(target_os = "windows")]
-    pub fn ligatures(&self) -> bool {
-        false
-    }
 }
 
 fn default_font_size() -> Size {
